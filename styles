@@ -1,0 +1,90 @@
+:root {
+  --text: #222;
+  --bg: #f9f9f9;
+  --border: #ccc;
+  --highlight: #555;
+  --code-bg: #eee;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background: var(--bg);
+  color: var(--text);
+  padding: 2rem;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.header, .footer {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tagline {
+  margin-top: 0.25rem;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.zine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.zine-block {
+  border-left: 4px solid var(--highlight);
+  background: #fff;
+  padding: 1rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.2s;
+  position: relative;
+}
+
+.zine-block:hover {
+  background: #f0f0f0;
+}
+
+.zine-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.image-block img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.footer {
+  font-size: 0.9rem;
+  color: var(--highlight);
+}
+
+.footer a {
+  color: var(--highlight);
+  text-decoration: underline;
+}
