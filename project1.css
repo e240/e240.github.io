@@ -1,0 +1,70 @@
+.project-page {
+  max-width: var(--max-width);
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Courier New', monospace;
+}
+
+.project-page h1 {
+  text-transform: uppercase;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.project-page .lede {
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+  color: var(--text-muted);
+  max-width: 600px;
+}
+
+.grid-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.img {
+  background: #fff;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+}
+
+.img.padded img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.img.flush img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lore-text {
+  max-width: 700px;
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+.lore-text h2 {
+  text-transform: uppercase;
+  margin-top: 2rem;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.lore-text p {
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
