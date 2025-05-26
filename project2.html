@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BRUT ASCII CANVAS</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="asciiCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById("asciiCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const chars = ['█', '▓', '▒', '░', ' '];
+    const img = new Image();
+    img.src = "brut1bit.png"; // save your 1-bit image as 'brut1bit.png' in the same folder
+
+    function drawASCII(image) {
+      const charW = 8;
+      const charH = 10;
+      const cols = Math.floor(canvas.width / charW);
+      const rows = Math.floor(canvas.height / charH);
+
+      const offCanvas = document.createElement("canvas");
+      offCanvas.width = cols;
+      offCanvas.height = rows;
+      const offCtx = offCanvas.getContext("2d");
+      offCtx.drawImage(image, 0, 0, cols, rows);
+
+      const imgData = offCtx.getImageData(0, 0, cols, rows);
+      const data = imgData.data;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${charH}px monospace`;
+      ctx.fillStyle = "white";
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const i = (y * cols + x) * 4;
+          const brightness = data[i]; // grayscale so R=G=B
+          const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
+          const char = chars[charIndex];
+          ctx.fillText(char, x * charW, y * charH);
+        }
+      }
+    }
+
+    function resizeAndDraw() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      if (img.complete) drawASCII(img);
+    }
+
+    img.onload = resizeAndDraw;
+    window.addEventListener('resize', resizeAndDraw);
+  </script>
+</body>
+</html>
