@@ -31,7 +31,7 @@
     const asciiCanvas = document.getElementById("asciiCanvas");
     const asciiCtx = asciiCanvas.getContext("2d");
 
-    const asciiChars = ['█', '▓', '▒', '░', ' '];
+    const asciiChars = ['x', '▓', '▒', '░', '.'];
     const asciiImage = new Image();
     asciiImage.src = "img/brut1bit.png";
 
@@ -52,7 +52,7 @@
 
       asciiCtx.clearRect(0, 0, asciiCanvas.width, asciiCanvas.height);
       asciiCtx.font = `${charH}px monospace`;
-      asciiCtx.fillStyle = "white";
+      asciiCtx.fillStyle = "black";
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
@@ -98,7 +98,7 @@
 
       const size = 40 + Math.sin(time / 1000) * 10;
 
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = "black";
       ctx.lineWidth = 1;
       ctx.beginPath();
 
@@ -136,7 +136,7 @@
 
       // Poetry fade breathing
       const opacity = 0.4 + 0.5 * Math.sin(time / 1400);
-      ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+      ctx.fillStyle = `rgba(100,70,255,${opacity})`;
       ctx.font = "16px monospace";
       ctx.textAlign = "center";
 
