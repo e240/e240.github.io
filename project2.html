@@ -8,7 +8,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: grey;
+      background: green;
       overflow: hidden;
     }
     canvas {
@@ -135,8 +135,8 @@
       ctx.stroke();
 
       // Poetry fade breathing
-      const opacity = 0.4 + 0.5 * Math.sin(time / 1400);
-      ctx.fillStyle = `rgba(100,70,255,${opacity})`;
+      const opacity = 0.8 + 0.2 * Math.sin(time / 1400);
+      ctx.fillStyle = `rgba(0,0,0,${opacity})`;
       ctx.font = "16px monospace";
       ctx.textAlign = "center";
 
