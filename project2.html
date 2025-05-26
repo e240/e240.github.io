@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BRUT33</title>
+  <title>BRUT. 22</title>
   <style>
     html, body {
       margin: 0;
@@ -31,7 +31,7 @@
     const asciiCanvas = document.getElementById("asciiCanvas");
     const asciiCtx = asciiCanvas.getContext("2d");
 
-    const asciiChars = ['x', '▓', '▒', '░', '.'];
+    const asciiChars = ['█', '▓', '▒', '░', ' '];
     const asciiImage = new Image();
     asciiImage.src = "img/brut1bit.png";
 
@@ -52,7 +52,7 @@
 
       asciiCtx.clearRect(0, 0, asciiCanvas.width, asciiCanvas.height);
       asciiCtx.font = `${charH}px monospace`;
-      asciiCtx.fillStyle = "black";
+      asciiCtx.fillStyle = "white";
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
@@ -96,10 +96,10 @@
       const cx = overlayCanvas.width / 2;
       const cy = overlayCanvas.height / 2;
 
-      const size = 40 + Math.sin(time / 1000) * 10;
+      const size = 100 + Math.sin(time / 1000) * 10;
 
       ctx.strokeStyle = "black";
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 2;
       ctx.beginPath();
 
       // Draw isometric cube (hex-like illusion)
@@ -136,7 +136,7 @@
 
       // Poetry fade breathing
       const opacity = 0.8 + 0.2 * Math.sin(time / 1400);
-      ctx.fillStyle = `rgba(0,0,0,${opacity})`;
+      ctx.fillStyle = `rgba(255,255,255,${opacity})`;
       ctx.font = "16px monospace";
       ctx.textAlign = "center";
 
