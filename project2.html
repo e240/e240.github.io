@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BRUT ASCII CANVAS</title>
+  <title>BRUT</title>
   <style>
     html, body {
       margin: 0;
@@ -12,62 +12,142 @@
       overflow: hidden;
     }
     canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
       display: block;
     }
   </style>
 </head>
 <body>
+  <!-- Background ASCII -->
   <canvas id="asciiCanvas"></canvas>
-  <script>
-    const canvas = document.getElementById("asciiCanvas");
-    const ctx = canvas.getContext("2d");
 
-    const chars = ['█', '▓', '▒', '░', ' '];
-    const img = new Image();
-    img.src = "img/brut1bit.png"; // save your 1-bit image as 'brut1bit.png' in the same folder
+  <!-- Foreground Cube + Poetry -->
+  <canvas id="overlayCanvas"></canvas>
+
+  <script>
+    // --- ASCII BACKGROUND ---
+    const asciiCanvas = document.getElementById("asciiCanvas");
+    const asciiCtx = asciiCanvas.getContext("2d");
+
+    const asciiChars = ['█', '▓', '▒', '░', ' '];
+    const asciiImage = new Image();
+    asciiImage.src = "ascii-brut.png";
 
     function drawASCII(image) {
-  const charW = 8;
-  const charH = 10;
-  const cols = Math.floor(asciiCanvas.width / charW);
-  const rows = Math.floor(asciiCanvas.height / charH);
+      const charW = 8;
+      const charH = 10;
+      const cols = Math.floor(asciiCanvas.width / charW);
+      const rows = Math.floor(asciiCanvas.height / charH);
 
-  const offCanvas = document.createElement("canvas");
-  offCanvas.width = cols;
-  offCanvas.height = rows;
-  const offCtx = offCanvas.getContext("2d");
-  offCtx.drawImage(image, 0, 0, cols, rows);
+      const offCanvas = document.createElement("canvas");
+      offCanvas.width = cols;
+      offCanvas.height = rows;
+      const offCtx = offCanvas.getContext("2d");
+      offCtx.drawImage(image, 0, 0, cols, rows);
 
-  const imgData = offCtx.getImageData(0, 0, cols, rows);
-  const data = imgData.data;
+      const imgData = offCtx.getImageData(0, 0, cols, rows);
+      const data = imgData.data;
 
-  asciiCtx.clearRect(0, 0, asciiCanvas.width, asciiCanvas.height);
-  asciiCtx.font = `${charH}px Menlo, Consolas, Monaco, monospace`;
-  asciiCtx.fillStyle = "white";
-  asciiCtx.textBaseline = "top";
+      asciiCtx.clearRect(0, 0, asciiCanvas.width, asciiCanvas.height);
+      asciiCtx.font = `${charH}px monospace`;
+      asciiCtx.fillStyle = "white";
 
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const i = (y * cols + x) * 4;
-      const brightness = data[i]; // grayscale from red channel
-      const charIndex = Math.floor((brightness / 255) * (asciiChars.length - 1));
-      const char = asciiChars[charIndex];
-      asciiCtx.fillText(char, x * charW, y * charH);
-    }
-  }
-}
-
-
-    function resizeAndDraw() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      if (img.complete) drawASCII(img);
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const i = (y * cols + x) * 4;
+          const brightness = data[i];
+          const charIndex = Math.floor((brightness / 255) * (asciiChars.length - 1));
+          const char = asciiChars[charIndex];
+          asciiCtx.fillText(char, x * charW, y * charH);
+        }
+      }
     }
 
-    img.onload = resizeAndDraw;
-    window.addEventListener('resize', resizeAndDraw);
+    function resizeAscii() {
+      asciiCanvas.width = window.innerWidth;
+      asciiCanvas.height = window.innerHeight;
+      if (asciiImage.complete) drawASCII(asciiImage);
+    }
+
+    asciiImage.onload = resizeAscii;
+    window.addEventListener("resize", resizeAscii);
+
+    // --- OVERLAY: BREATHING CUBE + POETRY ---
+    const overlayCanvas = document.getElementById("overlayCanvas");
+    const overlayCtx = overlayCanvas.getContext("2d");
+
+    const poetryLines = [
+      "█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█",
+      "█  system.print(null); █",
+      "█  :: let silence = 0; █",
+      "█  [flux] > raw.human; █",
+      "█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█"
+    ];
+
+    function drawBreathingCubeAndPoem(time) {
+      overlayCanvas.width = window.innerWidth;
+      overlayCanvas.height = window.innerHeight;
+
+      const ctx = overlayCtx;
+      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+      const cx = overlayCanvas.width / 2;
+      const cy = overlayCanvas.height / 2;
+
+      const size = 40 + Math.sin(time / 1000) * 10;
+
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+
+      // Draw isometric cube (hex-like illusion)
+      const iso = (x, y, z) => {
+        const scale = size;
+        return [
+          cx + (x - z) * scale * 0.5,
+          cy + (x + z) * scale * 0.25 - y * scale * 0.7
+        ];
+      };
+
+      const points = [
+        iso(0, 0, 0),
+        iso(1, 0, 0),
+        iso(1, 0, 1),
+        iso(0, 0, 1),
+        iso(0, 1, 0),
+        iso(1, 1, 0),
+        iso(1, 1, 1),
+        iso(0, 1, 1),
+      ];
+
+      const lines = [
+        [0, 1], [1, 2], [2, 3], [3, 0], // bottom
+        [4, 5], [5, 6], [6, 7], [7, 4], // top
+        [0, 4], [1, 5], [2, 6], [3, 7]  // verticals
+      ];
+
+      lines.forEach(([a, b]) => {
+        ctx.moveTo(...points[a]);
+        ctx.lineTo(...points[b]);
+      });
+      ctx.stroke();
+
+      // Poetry fade breathing
+      const opacity = 0.4 + 0.5 * Math.sin(time / 1400);
+      ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+      ctx.font = "16px monospace";
+      ctx.textAlign = "center";
+
+      poetryLines.forEach((line, i) => {
+        ctx.fillText(line, cx, cy + size + 30 + i * 18);
+      });
+
+      requestAnimationFrame(drawBreathingCubeAndPoem);
+    }
+
+    requestAnimationFrame(drawBreathingCubeAndPoem);
   </script>
 </body>
 </html>
-
-
