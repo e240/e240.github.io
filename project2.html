@@ -27,34 +27,36 @@
     img.src = "img/brut1bit.png"; // save your 1-bit image as 'brut1bit.png' in the same folder
 
     function drawASCII(image) {
-      const charW = 8;
-      const charH = 10;
-      const cols = Math.floor(canvas.width / charW);
-      const rows = Math.floor(canvas.height / charH);
+  const charW = 8;
+  const charH = 10;
+  const cols = Math.floor(asciiCanvas.width / charW);
+  const rows = Math.floor(asciiCanvas.height / charH);
 
-      const offCanvas = document.createElement("canvas");
-      offCanvas.width = cols;
-      offCanvas.height = rows;
-      const offCtx = offCanvas.getContext("2d");
-      offCtx.drawImage(image, 0, 0, cols, rows);
+  const offCanvas = document.createElement("canvas");
+  offCanvas.width = cols;
+  offCanvas.height = rows;
+  const offCtx = offCanvas.getContext("2d");
+  offCtx.drawImage(image, 0, 0, cols, rows);
 
-      const imgData = offCtx.getImageData(0, 0, cols, rows);
-      const data = imgData.data;
+  const imgData = offCtx.getImageData(0, 0, cols, rows);
+  const data = imgData.data;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = `${charH}px monospace`;
-      ctx.fillStyle = "white";
+  asciiCtx.clearRect(0, 0, asciiCanvas.width, asciiCanvas.height);
+  asciiCtx.font = `${charH}px Menlo, Consolas, Monaco, monospace`;
+  asciiCtx.fillStyle = "white";
+  asciiCtx.textBaseline = "top";
 
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          const i = (y * cols + x) * 4;
-          const brightness = data[i]; // grayscale so R=G=B
-          const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
-          const char = chars[charIndex];
-          ctx.fillText(char, x * charW, y * charH);
-        }
-      }
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const i = (y * cols + x) * 4;
+      const brightness = data[i]; // grayscale from red channel
+      const charIndex = Math.floor((brightness / 255) * (asciiChars.length - 1));
+      const char = asciiChars[charIndex];
+      asciiCtx.fillText(char, x * charW, y * charH);
     }
+  }
+}
+
 
     function resizeAndDraw() {
       canvas.width = window.innerWidth;
@@ -67,3 +69,5 @@
   </script>
 </body>
 </html>
+
+
